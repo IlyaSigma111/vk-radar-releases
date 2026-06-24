@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VK Radar — мониторинг ВКонтакте</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0a0e17;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    .bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden; pointer-events: none; z-index: 0;
+    }
+    .bg .ring {
+      position: absolute; top: 50%; left: 50%; border-radius: 50%;
+      border: 1px solid rgba(65,105,225,0.15); transform: translate(-50%,-50%);
+    }
+    .bg .ring:nth-child(1) { width: 200px; height: 200px; animation: pulse 4s ease-in-out infinite; }
+    .bg .ring:nth-child(2) { width: 400px; height: 400px; animation: pulse 4s ease-in-out infinite 1s; }
+    .bg .ring:nth-child(3) { width: 600px; height: 600px; animation: pulse 4s ease-in-out infinite 2s; }
+    .bg .ring:nth-child(4) { width: 800px; height: 800px; animation: pulse 4s ease-in-out infinite 3s; }
+    @keyframes pulse {
+      0% { opacity: 0.2; transform: translate(-50%,-50%) scale(0.8); }
+      50% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+      100% { opacity: 0.2; transform: translate(-50%,-50%) scale(0.8); }
+    }
+    .container { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 60px 24px; }
+    header { text-align: center; margin-bottom: 48px; }
+    header h1 { font-size: 42px; font-weight: 800; background: linear-gradient(135deg, #4169e1, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
+    header p { font-size: 18px; color: #94a3b8; line-height: 1.6; }
+    .screenshot {
+      background: #111827; border: 1px solid #1e293b; border-radius: 16px;
+      padding: 24px; margin-bottom: 48px; text-align: center;
+    }
+    .screenshot img { max-width: 100%; border-radius: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 48px; }
+    .feature { background: #111827; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; }
+    .feature h3 { font-size: 16px; margin-bottom: 6px; }
+    .feature p { font-size: 14px; color: #94a3b8; line-height: 1.5; }
+    .download { text-align: center; margin-bottom: 48px; }
+    .download h2 { font-size: 24px; margin-bottom: 20px; }
+    .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: 10px; font-size: 16px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s ease;
+    }
+    .btn-primary { background: linear-gradient(135deg, #4169e1, #6366f1); color: #fff; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(65,105,225,0.3); }
+    .btn-secondary { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; }
+    .btn-secondary:hover { background: #334155; transform: translateY(-2px); }
+    .btn svg { width: 20px; height: 20px; }
+    .footer { text-align: center; color: #475569; font-size: 13px; }
+    @media (max-width: 600px) {
+      header h1 { font-size: 28px; }
+      .features { grid-template-columns: 1fr; }
+      .buttons { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="container">
+    <header>
+      <h1>VK Radar</h1>
+      <p>Десктопное приложение для мониторинга групп ВКонтакте.<br>Автосканирование, поиск по ключевым словам, уведомления.</p>
+    </header>
+
+    <div class="screenshot">
+      <svg viewBox="0 0 800 500" style="width:100%;border-radius:8px;background:#0a0e17">
+        <rect x="0" y="0" width="800" height="44" fill="#111827" rx="8"/>
+        <rect x="12" y="10" width="20" height="24" rx="4" fill="#1e293b"/>
+        <circle cx="22" cy="36" r="6" fill="none" stroke="#4169e1" stroke-width="1.5"/>
+        <rect x="40" y="14" width="120" height="16" rx="4" fill="url(#g)"/>
+        <circle cx="740" cy="22" r="4" fill="#22c55e"/>
+        <rect x="700" y="14" width="30" height="16" rx="4" fill="#1e293b"/>
+        <rect x="670" y="14" width="24" height="16" rx="4" fill="#1e293b"/>
+        <rect x="640" y="14" width="24" height="16" rx="4" fill="#1e293b"/>
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4169e1"/><stop offset="1" stop-color="#6366f1"/></linearGradient></defs>
+        <rect x="12" y="56" width="240" height="280" rx="12" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+        <circle cx="32" cy="80" r="12" fill="#1e293b"/>
+        <rect x="50" y="74" width="100" height="10" rx="3" fill="#1e293b"/>
+        <rect x="160" y="74" width="40" height="10" rx="3" fill="#1e293b"/>
+        <rect x="20" y="100" width="224" height="130" rx="6" fill="#1e293b"/>
+        <polygon points="132,165 152,165 152,145 172,145 172,165 192,165 192,145 212,145 212,165 232,165 232,220 132,220" fill="#1e293b" opacity="0.5"/>
+        <rect x="20" y="238" width="224" height="40" rx="4" fill="#1e293b"/>
+        <rect x="20" y="286" width="80" height="16" rx="4" fill="#1e293b"/>
+        <rect x="110" y="286" width="60" height="16" rx="4" fill="#1e293b"/>
+        <rect x="180" y="286" width="50" height="16" rx="4" fill="#1e293b"/>
+
+        <rect x="270" y="56" width="240" height="280" rx="12" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+        <circle cx="290" cy="80" r="12" fill="#1e293b"/>
+        <rect x="308" y="74" width="100" height="10" rx="3" fill="#1e293b"/>
+        <rect x="418" y="74" width="40" height="10" rx="3" fill="#1e293b"/>
+        <rect x="278" y="100" width="224" height="130" rx="6" fill="#1e293b"/>
+        <polygon points="390,165 410,165 410,145 430,145 430,165 450,165 450,145 470,145 470,165 490,165 490,220 390,220" fill="#1e293b" opacity="0.5"/>
+        <rect x="278" y="238" width="224" height="40" rx="4" fill="#1e293b"/>
+        <rect x="278" y="286" width="80" height="16" rx="4" fill="#1e293b"/>
+        <rect x="368" y="286" width="60" height="16" rx="4" fill="#1e293b"/>
+
+        <rect x="528" y="56" width="240" height="280" rx="12" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+        <circle cx="548" cy="80" r="12" fill="#1e293b"/>
+        <rect x="566" y="74" width="100" height="10" rx="3" fill="#1e293b"/>
+        <rect x="676" y="74" width="40" height="10" rx="3" fill="#1e293b"/>
+        <rect x="536" y="100" width="224" height="130" rx="6" fill="#1e293b"/>
+        <rect x="536" y="238" width="224" height="40" rx="4" fill="#1e293b"/>
+        <rect x="536" y="286" width="80" height="16" rx="4" fill="#1e293b"/>
+      </svg>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <h3>🔍 Автосканирование</h3>
+        <p>Автоматически проверяет новые посты в группах каждые 30 секунд</p>
+      </div>
+      <div class="feature">
+        <h3>🏠 Своё окно</h3>
+        <p>Полноценное десктопное приложение. Не браузер, не Electron</p>
+      </div>
+      <div class="feature">
+        <h3>📦 Один файл</h3>
+        <p>Всё встроено: фронтенд, API-сервер, сканер. Никаких зависимостей</p>
+      </div>
+      <div class="feature">
+        <h3>🔒 Без БД</h3>
+        <p>Данные хранятся в памяти и JSON-файлах. Никаких баз данных</p>
+      </div>
+    </div>
+
+    <div class="download">
+      <h2>Скачать</h2>
+      <div class="buttons">
+        <a class="btn btn-primary" href="https://github.com/IlyaSigma111/vk-radar-releases/releases/latest/download/VK-Radar-Setup.exe">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Скачать для Windows
+        </a>
+        <a class="btn btn-secondary" href="https://github.com/IlyaSigma111/vk-radar-releases/releases/latest">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Другие версии
+        </a>
+      </div>
+      <p style="margin-top:12px;color:#64748b;font-size:13px">Windows 10/11, 64-bit</p>
+    </div>
+
+    <div class="footer">
+      <p>VK Radar &mdash; мониторинг ВКонтакте. Сделано на Rust + Tauri.</p>
+      <p style="margin-top:4px"><a href="https://github.com/IlyaSigma111/vk-radar-releases" style="color:#64748b">GitHub</a></p>
+    </div>
+  </div>
+</body>
+</html>
